@@ -1,0 +1,37 @@
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
+    }
+}
+
+apply plugin: 'shadow'
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':groovy-wizard-core')
+    compile 'org.codehaus.groovy:groovy:2.2.2'
+    compile 'io.dropwizard:dropwizard-core:0.7.0'
+    compile 'com.sun.jersey:jersey-client:1.14'
+
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile 'junit:junit:4.11'
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'gw.app.GroovyWizardApplication')
+    }
+}
+
+task('run-app', type: JavaExec) {
+    main = 'gw.app.GroovyWizardApplication'
+    classpath = sourceSets.main.runtimeClasspath
+
+}
+
