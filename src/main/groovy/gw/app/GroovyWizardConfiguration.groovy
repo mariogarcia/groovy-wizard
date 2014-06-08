@@ -7,11 +7,17 @@ import io.dropwizard.Configuration
 @CompileStatic
 class GroovyWizardConfiguration extends Configuration {
 
-    static final Map CONFIGURATION =[version: 12]
+    Map configuration = [:]
 
-    Object propertyMissing(String name) {
-        CONFIGURATION[name]
+    Object propertyMissing(final String name) {
+        configuration[name] ?: getFreshValue(name)
     }
 
+    Object getFreshValue(final String key) {
+        URL resourceURL =
+            this.getClass().classLoader.getResource('gw/app/Config.groovy')
+        configuration = new ConfigSlurper().parse(resourceURL)
+        return configuration[key]
+    }
 
 }
