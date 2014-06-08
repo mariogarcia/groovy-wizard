@@ -6,7 +6,7 @@ import gw.ast.SimpleJSON
 class HelloGroovyResource {
 
     String sayHello() {
-        return "This application has version [${configuration.version}]"
+        return "Hello from groovy"
     }
 
 }
