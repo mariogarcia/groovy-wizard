@@ -10,6 +10,8 @@ dependencies {
     compile 'io.dropwizard:dropwizard-core:0.7.0'
     compile 'com.sun.jersey:jersey-client:1.14'
 
+	compile 'com.codahale.metrics:metrics-core:3.0.1'
+
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'
 }
