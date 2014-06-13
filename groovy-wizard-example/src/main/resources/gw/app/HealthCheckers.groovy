@@ -2,7 +2,7 @@ import gw.hc.HelloWorldHealthChecker
 
 healthcheck {
     return [
-        new HelloWorldHealthChecker("${configuration.template}")
+        new HelloWorldHealthChecker(configuration.template)
     ]
 }
 

@@ -1,2 +1,2 @@
-version = 1.0
-tempalte = TEST
+version=1.0
+template='TEST'
