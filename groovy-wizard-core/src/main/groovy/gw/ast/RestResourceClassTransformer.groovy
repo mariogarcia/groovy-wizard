@@ -1,54 +1,44 @@
 package gw.ast
 
-import org.codehaus.groovy.ast.ASTNode
+import org.codehaus.groovy.ast.Parameter
 import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.MethodNode
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassCodeExpressionTransformer
+
+import javax.ws.rs.GET
+import javax.ws.rs.POST
+import javax.ws.rs.PUT
+import javax.ws.rs.DELETE
+
 import org.codehaus.groovy.ast.expr.ClassExpression
 import org.codehaus.groovy.ast.expr.PropertyExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression
-import org.codehaus.groovy.control.SourceUnit
-import org.codehaus.groovy.control.CompilePhase
+
 import org.codehaus.groovy.syntax.SyntaxException
-import org.codehaus.groovy.transform.GroovyASTTransformation
-import org.codehaus.groovy.transform.AbstractASTTransformation
+import org.codehaus.groovy.control.SourceUnit
 
-@GroovyASTTransformation(phase = CompilePhase.INSTRUCTION_SELECTION)
-class SimpleJSONAst extends AbstractASTTransformation {
-    void visit(ASTNode[] nodes, SourceUnit sourceUnit) {
-        if (!nodes) return
-        if(nodes.length < 2) return
-        if(!(nodes[0] instanceof AnnotationNode)) return
-        if(!(nodes[0].classNode.name == SimpleJSON.class.name)) return
-        if(!(nodes[1] instanceof ClassNode)) return
+import java.nio.file.Paths
 
-        AnnotationNode annotationNode = nodes[0]
-        ClassNode annotatedClassNode = nodes[1]
+class RestResourceClassTransformer extends ClassCodeExpressionTransformer {
 
+    SourceUnit sourceUnit
+
+    void visitClass(ClassNode classNode) {
+
+        AnnotationNode annotationNode = classNode.getAnnotations(ClassHelper.make(Rest)).first()
         String path = annotationNode.getMember('value').text
-        List<MethodNode> allMethods = annotatedClassNode.methods.findAll { !it.isSynthetic() }
+        List<MethodNode> allMethods = classNode.methods.findAll { !it.isSynthetic() }
 
         if (!allMethods) {
             sourceUnit.addError(new SyntaxException('Micro-Service needs at least one method!', 0, 0))
         }
-        if (allMethods?.size() > 1) {
-            sourceUnit.addError(new SyntaxException('Micro-Service ambiguity: Only one method allowed!',0, 0))
-        }
 
-        annotatedClassNode.addAnnotations([
+        classNode.addAnnotations([
             buildPathAnnotation(path),
             buildContentTypeAnnotation()
         ])
-
-        MethodNode methodNode = allMethods.first()
-        methodNode.addAnnotation(
-            new AnnotationNode(
-                ClassHelper.make(javax.ws.rs.GET)
-            )
-        )
-
     }
 
     AnnotationNode buildPathAnnotation(String path) {
@@ -70,4 +60,6 @@ class SimpleJSONAst extends AbstractASTTransformation {
         )
         return annotationNode
     }
+
 }
+
