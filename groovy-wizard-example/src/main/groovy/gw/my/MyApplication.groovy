@@ -25,19 +25,21 @@ class MyApplication extends Application<MyConfiguration> {
 
     void run(MyConfiguration configuration, Environment environment) {
         Injector injector = createInjector(configuration)
-        environment
-            .jersey()
-            .register(
-                injector.getInstance(HelloGroovyResource))
+        MyHolder holder = injector.getInstance(gw.my.MyHolder)
+        Closure<?> registerResource = { resource ->
+            environment.jersey().register(resource)
+        }
+        Closure<?> registerHealCheck = { HealthCheck healthCheck ->
+            environment.healthChecks().register("name", healthCheck)
+        }
+
+        holder.resourceList.each(registerResource)
+        holder.healthCheckList.each(registerHealCheck)
     }
 
     private Injector createInjector(final MyConfiguration conf) {
-    return Guice.createInjector(new AbstractModule() {
-        @Override
-        protected void configure() {
-            bind(MyConfiguration).toInstance(conf)
-        }
-    });
-}
+        return Guice.createInjector(new MyApplicationModule(conf))
+    }
+
 }
 

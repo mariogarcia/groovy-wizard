@@ -12,6 +12,7 @@ dependencies {
 
 	compile 'com.codahale.metrics:metrics-core:3.0.1'
     compile 'com.google.inject:guice:3.0'
+    compile 'com.google.inject.extensions:guice-multibindings:3.0'
 
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'

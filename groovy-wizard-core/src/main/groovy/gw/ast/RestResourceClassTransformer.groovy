@@ -39,6 +39,8 @@ class RestResourceClassTransformer extends ClassCodeExpressionTransformer {
             buildPathAnnotation(path),
             buildContentTypeAnnotation()
         ])
+
+        classNode.addInterface(ClassHelper.make(gw.app.Resource))
     }
 
     AnnotationNode buildPathAnnotation(String path) {
