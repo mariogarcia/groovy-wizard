@@ -16,7 +16,9 @@ repositories {
 dependencies {
     compile project(':groovy-wizard-core')
     compile 'org.codehaus.groovy:groovy:2.2.2'
+
     compile 'io.dropwizard:dropwizard-core:0.7.0'
+    compile 'io.dropwizard:dropwizard-db:0.7.0'
     compile 'com.sun.jersey:jersey-client:1.14'
 
 	compile 'com.codahale.metrics:metrics-core:3.0.1'
@@ -27,12 +29,12 @@ dependencies {
 
 jar {
     manifest {
-        attributes('Main-Class': 'gw.app.GroovyWizardApplication')
+        attributes('Main-Class': 'gw.my.MyApplication')
     }
 }
 
 task('run-app', type: JavaExec) {
-    main = 'gw.app.GroovyWizardApplication'
+    main = 'gw.my.MyApplication'
     classpath = sourceSets.main.runtimeClasspath
 
 }

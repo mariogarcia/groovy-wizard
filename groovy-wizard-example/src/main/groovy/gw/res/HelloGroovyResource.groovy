@@ -15,7 +15,7 @@ class HelloGroovyResource {
     }
 
     String 'GET/bye/{name}'(String name) {
-        return service.sayGoodbye(name)
+        return service.sayGoodbyeTo(name)
     }
 
 }
