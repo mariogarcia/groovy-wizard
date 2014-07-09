@@ -8,19 +8,19 @@ import io.dropwizard.setup.Environment
 
 import org.skife.jdbi.v2.DBI
 
-class MyApplicationModule extends Module {
+class QuotesApplicationModule extends Module {
 
-    final MyConfiguration configuration
+    final QuotesConfiguration configuration
     final Environment environment
 
-    MyApplicationModule(MyConfiguration configuration, Environment environment) {
+    QuotesApplicationModule(QuotesConfiguration configuration, Environment environment) {
        this.configuration = configuration
        this.environment = environment
     }
 
     void configureModule() {
 
-        bind(MyConfiguration).toInstance(configuration)
+        bind(QuotesConfiguration).toInstance(configuration)
         bind(Environment).toInstance(environment)
 
         bind(DBI).toProvider(DBIProvider)

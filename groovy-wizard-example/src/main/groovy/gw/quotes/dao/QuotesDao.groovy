@@ -1,6 +1,6 @@
 package gw.quotes.dao
 
-import gw.quotes.jdbi.MapMapper
+import gw.jdbi.MapMapper
 
 import org.skife.jdbi.v2.sqlobject.Bind
 import org.skife.jdbi.v2.sqlobject.SqlQuery

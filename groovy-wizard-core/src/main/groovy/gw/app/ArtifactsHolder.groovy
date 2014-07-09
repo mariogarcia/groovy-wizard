@@ -1,10 +1,9 @@
-package gw.quotes.app
+package gw.app
 
-import gw.ast.Inject
-import gw.app.Resource
+import com.google.inject.Inject
 import com.codahale.metrics.health.HealthCheck
 
-class MyHolder {
+class ArtifactsHolder {
 
     @Inject Set<Resource> resourceList
     @Inject Set<HealthCheck> healthCheckList

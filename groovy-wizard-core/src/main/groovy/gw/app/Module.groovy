@@ -14,8 +14,14 @@ abstract class Module extends AbstractModule {
     void configure() {
         resourceBinder = Multibinder.newSetBinder(binder(), Resource)
         healthCheckBinder = Multibinder.newSetBinder(binder(), HealthCheck)
+
+        configurePreModule()
         configureModule()
+        configurePostModule()
     }
+
+    void configurePreModule() { }
+    void configurePostModule() {}
 
     abstract void configureModule()
 

@@ -14,7 +14,7 @@ import io.dropwizard.jdbi.DBIFactory
 @Singleton
 class DBIProvider implements Provider<DBI> {
 
-    @Inject MyConfiguration configuration
+    @Inject QuotesConfiguration configuration
     @Inject Environment environment
 
     DBI get() {

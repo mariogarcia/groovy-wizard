@@ -1,4 +1,4 @@
-package gw.quotes.jdbi
+package gw.jdbi
 
 import java.sql.SQLException
 import java.sql.ResultSet

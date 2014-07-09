@@ -8,6 +8,8 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy:2.2.2'
     compile 'io.dropwizard:dropwizard-core:0.7.0'
+    compile 'io.dropwizard:dropwizard-jdbi:0.7.0'
+
     compile 'com.sun.jersey:jersey-client:1.14'
 
 	compile 'com.codahale.metrics:metrics-core:3.0.1'

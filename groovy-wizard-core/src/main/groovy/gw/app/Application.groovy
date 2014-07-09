@@ -1,8 +1,7 @@
-package gw.quotes.app
-
-import groovy.transform.CompileStatic
+package gw.app
 
 import io.dropwizard.Application
+import io.dropwizard.Configuration
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 
@@ -12,23 +11,26 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
-@CompileStatic
-class MyApplication extends Application<MyConfiguration> {
+abstract class Application<T extends Configuration, M extends Module>
+    extends io.dropwizard.Application<T> {
 
-    static void main(String[] args) {
-        new MyApplication().run(args)
+    final Class<M> moduleClazz
+
+    Application(final Class<M> moduleClazz) {
+        this.moduleClazz = moduleClazz
     }
 
-    void initialize(Bootstrap<MyConfiguration> bootstrap) { }
+    void initialize(Bootstrap<T> bootstrap) { }
 
-    void run(MyConfiguration configuration, Environment environment) {
+    void run(T configuration, Environment environment) {
         register(configuration, environment)
     }
 
-    void register(MyConfiguration configuration, Environment environment) {
+    void register(T configuration, Environment environment) {
 
         Injector injector = createInjector(configuration, environment)
-        MyHolder holder = injector.getInstance(gw.quotes.app.MyHolder)
+        ArtifactsHolder holder = injector.getInstance(ArtifactsHolder)
+
         Closure<?> registerResource = { resource ->
             environment.jersey().register(resource)
         }
@@ -41,8 +43,10 @@ class MyApplication extends Application<MyConfiguration> {
 
     }
 
-    private Injector createInjector(final MyConfiguration conf, final Environment environment) {
-        return Guice.createInjector(new MyApplicationModule(conf, environment))
+    private Injector createInjector(final T conf, final Environment environment) {
+        M module = moduleClazz.newInstance([conf, environment] as Object[])
+        println module
+        return Guice.createInjector(module)
     }
 
 }
