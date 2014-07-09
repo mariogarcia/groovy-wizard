@@ -1,11 +1,11 @@
-package gw.quotes.app
+package gw.jdbi
 
-import gw.ast.Inject
-
+import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Provides
 import com.google.inject.Singleton
 
+import io.dropwizard.Configuration
 import io.dropwizard.setup.Environment
 
 import org.skife.jdbi.v2.DBI
@@ -14,7 +14,7 @@ import io.dropwizard.jdbi.DBIFactory
 @Singleton
 class DBIProvider implements Provider<DBI> {
 
-    @Inject QuotesConfiguration configuration
+    @Inject Configuration configuration
     @Inject Environment environment
 
     DBI get() {
