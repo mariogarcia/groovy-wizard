@@ -1,8 +1,8 @@
-package gw.hc
+package gw.quotes.health
 
 import gw.app.Module
 
-class HelloHealthCheckModule extends Module {
+class QuotesHealthChecksModule extends Module {
 
     void configureModule() {
         bindHealthCheck().to(HelloHealthCheck)

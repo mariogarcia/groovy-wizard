@@ -1,4 +1,4 @@
-package gw.my
+package gw.quotes.app
 
 import gw.ast.Inject
 import gw.app.Resource

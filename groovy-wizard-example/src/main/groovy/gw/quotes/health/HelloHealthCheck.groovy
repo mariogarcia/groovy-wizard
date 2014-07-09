@@ -1,4 +1,4 @@
-package gw.hc
+package gw.quotes.health
 
 import com.codahale.metrics.health.HealthCheck
 import com.codahale.metrics.health.HealthCheck.Result
@@ -8,7 +8,7 @@ public class HelloHealthCheck extends HealthCheck {
     final String template;
 
     HelloHealthCheck() {
-        this.template = 'template';
+        this.template = 'template'
     }
 
     Result check() throws Exception {
@@ -17,6 +17,6 @@ public class HelloHealthCheck extends HealthCheck {
 
         return !saying.contains("TEST") ?
                     Result.unhealthy("template doesn't include a name") :
-                    Result.healthy();
+                    Result.healthy()
     }
 }

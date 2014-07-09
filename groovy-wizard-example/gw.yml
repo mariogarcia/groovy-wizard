@@ -1,21 +1,17 @@
-template: Hello, %s!
-
-defaultName: Stranger
-
 # Database settings.
 database:
 
   # the name of your JDBC driver
-  driverClass: org.h2.Driver
+  driverClass: org.postgresql.Driver
 
   # the username
-  user: sa
+  user: quoter
 
   # the password
-  password: sa
+  # password: sa
 
   # the JDBC URL
-  url: jdbc:h2:./target/example
+  url: jdbc:postgresql://localhost:5432/quotes
 
 # use the simple server factory if you only want to run on a single port
 #server:
@@ -30,11 +26,11 @@ server:
   applicationConnectors:
     - type: http
       port: 8080
-    - type: https
-      port: 8443
-      keyStorePath: example.keystore
-      keyStorePassword: example
-      validateCerts: false
+#    - type: https
+#      port: 8443
+#      keyStorePath: example.keystore
+#      keyStorePassword: example
+#      validateCerts: false
 # this requires the npn-boot library on the JVM's boot classpath
 #    - type: spdy3
 #      port: 8445
@@ -44,11 +40,11 @@ server:
   adminConnectors:
     - type: http
       port: 8081
-    - type: https
-      port: 8444
-      keyStorePath: example.keystore
-      keyStorePassword: example
-      validateCerts: false
+#    - type: https
+#      port: 8444
+#      keyStorePath: example.keystore
+#      keyStorePassword: example
+#      validateCerts: false
 
 # Logging settings.
 logging:
@@ -60,9 +56,7 @@ logging:
   loggers:
 
     # Sets the level for 'com.example.app' to DEBUG.
-    com.example.app: DEBUG
-
-    org.hibernate.SQL: ALL
+    gw.quotes: DEBUG
 
   appenders:
     - type: console
