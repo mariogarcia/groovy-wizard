@@ -7,13 +7,13 @@ import org.codehaus.groovy.transform.GroovyASTTransformation
 
 
 @GroovyASTTransformation(phase = CompilePhase.INSTRUCTION_SELECTION)
-class RestResourceTransformationsAst extends RestAnnotatedClassNodeAst {
+class ResourceTransformationsAst extends ResourceAnnotatedClassNodeAst {
 
-    RestResourceTransformationsAst() {
+    ResourceTransformationsAst() {
         super(
             Arrays.asList(
-                new RestResourceClassTransformer(),
-                new RestResourceMethodTransformer()
+                new ResourceClassTransformer(),
+                new ResourceMethodTransformer()
             )
         )
     }

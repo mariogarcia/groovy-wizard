@@ -10,11 +10,11 @@ import org.codehaus.groovy.ast.ClassCodeExpressionTransformer
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.AbstractASTTransformation
 
-abstract class RestAnnotatedClassNodeAst extends AbstractASTTransformation {
+abstract class ResourceAnnotatedClassNodeAst extends AbstractASTTransformation {
 
     final List<ClassCodeExpressionTransformer> transformerList
 
-    RestAnnotatedClassNodeAst(List<ClassCodeExpressionTransformer> transformerList) {
+    ResourceAnnotatedClassNodeAst(List<ClassCodeExpressionTransformer> transformerList) {
        this.transformerList = transformerList
     }
 
@@ -23,7 +23,7 @@ abstract class RestAnnotatedClassNodeAst extends AbstractASTTransformation {
             .AST
             .classes
             .each { ClassNode classNode ->
-                if (classNode.getAnnotations(ClassHelper.make(Rest))) {
+                if (classNode.getAnnotations(ClassHelper.make(Resource))) {
                     transformerList.each { ClassCodeExpressionTransformer transformer ->
                         transformer.sourceUnit = sourceUnit
                         transformer.visitClass(classNode)

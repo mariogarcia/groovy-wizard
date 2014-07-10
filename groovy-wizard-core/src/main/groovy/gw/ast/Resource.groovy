@@ -7,6 +7,6 @@ import java.lang.annotation.RetentionPolicy
 
 @Target([ElementType.TYPE])
 @Retention(RetentionPolicy.SOURCE)
-@interface Rest {
+@interface Resource {
     String value() default '/'
 }

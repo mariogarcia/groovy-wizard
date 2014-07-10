@@ -1,11 +1,11 @@
 package gw.quotes.resource
 
-import gw.ast.Rest
+import gw.ast.Resource
 import gw.ast.Inject
 
 import gw.quotes.service.QuotesService
 
-@Rest('/api/')
+@Resource('/api/')
 class QuotesResource {
 
     @Inject QuotesService service

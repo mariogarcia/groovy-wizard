@@ -17,7 +17,7 @@ import org.codehaus.groovy.control.SourceUnit
 
 import java.nio.file.Paths
 
-class RestResourceMethodTransformer extends ClassCodeExpressionTransformer {
+class ResourceMethodTransformer extends ClassCodeExpressionTransformer {
 
     SourceUnit sourceUnit
     Map<String, Class> METHOD_ANNOTATION = [

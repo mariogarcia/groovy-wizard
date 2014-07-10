@@ -21,13 +21,13 @@ import org.codehaus.groovy.control.SourceUnit
 
 import java.nio.file.Paths
 
-class RestResourceClassTransformer extends ClassCodeExpressionTransformer {
+class ResourceClassTransformer extends ClassCodeExpressionTransformer {
 
     SourceUnit sourceUnit
 
     void visitClass(ClassNode classNode) {
 
-        AnnotationNode annotationNode = classNode.getAnnotations(ClassHelper.make(Rest)).first()
+        AnnotationNode annotationNode = classNode.getAnnotations(ClassHelper.make(Resource)).first()
         String path = annotationNode.getMember('value').text
         List<MethodNode> allMethods = classNode.methods.findAll { !it.isSynthetic() }
 
