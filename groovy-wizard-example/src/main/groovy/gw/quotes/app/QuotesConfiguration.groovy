@@ -1,12 +1,14 @@
 package gw.quotes.app
 
-import io.dropwizard.Configuration
+import gw.ast.Configuration
+
 import io.dropwizard.db.DataSourceFactory
 
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-class QuotesConfiguration extends Configuration {
+@Configuration
+class QuotesConfiguration {
 
     @Valid
     @NotNull
