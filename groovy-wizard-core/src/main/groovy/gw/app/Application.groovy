@@ -45,7 +45,12 @@ abstract class Application<T extends Configuration> extends io.dropwizard.Applic
     }
 
     private Injector createInjector(final T conf, final Environment environment) {
-        Module module = moduleClazz.newInstance([conf, environment] as Object[])
+        def args = [conf, environment] as Object[]
+
+        println moduleClazz.constructors
+        println args
+
+        Module module = moduleClazz.newInstance(args)
         return Guice.createInjector(module)
     }
 
