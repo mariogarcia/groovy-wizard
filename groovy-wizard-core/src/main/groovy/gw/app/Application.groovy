@@ -1,5 +1,7 @@
 package gw.app
 
+import gw.app.Module
+
 import io.dropwizard.Application
 import io.dropwizard.Configuration
 import io.dropwizard.setup.Bootstrap
@@ -11,12 +13,11 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
-abstract class Application<T extends Configuration, M extends Module>
-    extends io.dropwizard.Application<T> {
+abstract class Application<T extends Configuration> extends io.dropwizard.Application<T> {
 
-    final Class<M> moduleClazz
+    final Class<? extends Module> moduleClazz
 
-    Application(final Class<M> moduleClazz) {
+    Application(final Class<? extends Module> moduleClazz) {
         this.moduleClazz = moduleClazz
     }
 
@@ -44,8 +45,7 @@ abstract class Application<T extends Configuration, M extends Module>
     }
 
     private Injector createInjector(final T conf, final Environment environment) {
-        M module = moduleClazz.newInstance([conf, environment] as Object[])
-        println module
+        Module module = moduleClazz.newInstance([conf, environment] as Object[])
         return Guice.createInjector(module)
     }
 

@@ -2,7 +2,7 @@ package gw.quotes.app
 
 import gw.app.Application
 
-class QuotesApplication extends Application<QuotesConfiguration, QuotesApplicationModule> {
+class QuotesApplication extends Application<QuotesConfiguration> {
 
     QuotesApplication() {
         super(QuotesApplicationModule)
