@@ -1,12 +1,12 @@
 package gw.quotes.app
 
-import gw.app.Application
+import gw.ast.Application
 
-class QuotesApplication extends Application<QuotesConfiguration> {
-
-    QuotesApplication() {
-        super(QuotesApplicationModule)
-    }
+@Application(
+    module=QuotesApplicationModule,
+    configuration=QuotesConfiguration
+)
+class QuotesApplication {
 
     static void main(String[] args) {
         new QuotesApplication().run(args)
