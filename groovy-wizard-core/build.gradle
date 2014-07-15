@@ -1,5 +1,19 @@
 
+apply plugin: 'maven'
 apply plugin: 'groovy'
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    pkg {
+        repo = 'maven'
+        name = 'groovy-wizard-core'
+        desc = 'Groovy utilities to make Dropwizard development easier'
+        licenses = ['Apache-2.0']
+        labels = ['groovy', 'dropwizard']
+    }
+}
 
 repositories {
     mavenCentral()
