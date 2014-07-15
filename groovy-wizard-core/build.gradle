@@ -1,13 +1,30 @@
 
-apply plugin: 'maven'
 apply plugin: 'groovy'
+apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
+
+publishing {
+    publications {
+        mavenCustom(MavenPublication) {
+            groupId 'groovy-wizard'
+            artifactId 'groovy-wizard-core'
+            version '0.0.1'
+
+            from components.java
+        }
+    }
+}
 
 bintray {
     user = bintrayUser
     key = bintrayKey
+    publish = true
+    publications = ['mavenCustom']
     pkg {
         repo = 'maven'
+        version {
+            name = '0.0.1'
+        }
         name = 'groovy-wizard-core'
         desc = 'Groovy utilities to make Dropwizard development easier'
         licenses = ['Apache-2.0']
