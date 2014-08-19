@@ -1,5 +1,6 @@
 
-rootProject.name = 'groovy-wizard'
+rootProject.name = 'warlock'
 
-include 'groovy-wizard-core'
-include 'groovy-wizard-example'
+include 'warlock-fn'
+include 'warlock-core'
+include 'warlock-example'

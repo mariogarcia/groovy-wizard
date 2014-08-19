@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':groovy-wizard-core')
+    compile project(':warlock-core')
 
     compile 'org.codehaus.groovy:groovy:2.2.2'
     runtime "org.postgresql:postgresql:9.2-1004-jdbc4"

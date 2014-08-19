@@ -16,8 +16,8 @@ publishing {
 }
 
 bintray {
-    user = bintrayUser
-    key = bintrayKey
+    user = 'bintrayUser'
+    key = 'bintrayKey'
     publish = true
     publications = ['mavenCustom']
     pkg {
