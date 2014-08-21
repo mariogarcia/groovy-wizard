@@ -3,30 +3,40 @@ package warlock.fn
 import static warlock.fn.Either.left
 import static warlock.fn.Either.right
 
+import spock.lang.Unroll
 import spock.lang.Specification
 
 class EitherSpec extends Specification {
 
-    void 'Creating a left instance'() {
+    static final Closure<String> TO_UPPER = { String word -> word.toUpperCase() }
+
+    @Unroll void 'fmap'() {
         given: 'a left Either instance'
             Either<String,String> eitherInstance = left('no processable')
-        when: 'trying to do something with it'
-            Either<String,String> result = eitherInstance.fmap(toUpper)
-        then: 'the value should remain unchanged'
-            result.value == 'no processable'
+        when: 'trying to transform the value'
+            Either<String,String> result = instance.fmap(TO_UPPER)
+        then: 'the value should match the expected result'
+            result.value == value
+        where: 'possible cases are'
+            instance              | value
+            right('processable')  | 'PROCESSABLE'
+            left('unprocessable') | 'unprocessable'
     }
 
-    Closure<String> toUpper = { String word -> word.toUpperCase() }
-
-    void 'Creating a right instance'() {
-        given: 'a right Either instance'
-            Either<String,String> eitherInstance = right('processable')
-        when: 'trying to do something with it'
-            Either<String,String> result = eitherInstance.fmap(toUpper)
-        then: 'the value should change'
-            result.value == 'PROCESSABLE'
-
-
+    @Unroll void 'fapply'() {
+        given: 'a left Either instance'
+            Either<String,String> eitherInstance = left('no processable')
+        when: 'trying apply an applicative'
+            Either<String,String> result = instance.fapply(applicativeFn)
+        then: 'the value should match the expected result'
+            result.value == value
+        where: 'possible cases are'
+            instance               | applicativeFn   | value
+            right('processable')   | right(TO_UPPER) | 'PROCESSABLE'
+            right('unprocessable') | left(TO_UPPER)  | 'unprocessable'
+            left('unprocessable')  | left(TO_UPPER)  | 'unprocessable'
+            left('unprocessable')  | right(TO_UPPER) | 'unprocessable'
     }
+
 
 }
