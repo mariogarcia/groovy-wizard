@@ -1,7 +1,9 @@
 package warlock.fn
 
+import groovy.transform.ToString
 import groovy.transform.CompileStatic
 
+@ToString
 @CompileStatic
 class Either<I,O> implements Monad<I,O> {
 

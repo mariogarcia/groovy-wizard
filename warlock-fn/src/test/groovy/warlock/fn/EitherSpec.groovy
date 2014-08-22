@@ -8,7 +8,13 @@ import spock.lang.Specification
 
 class EitherSpec extends Specification {
 
+    static final Integer ONE = 1
     static final Closure<String> TO_UPPER = { String word -> word.toUpperCase() }
+    static final Function<Integer,Either<Integer>> F = { it * 2 }
+    static final Function<Integer,Either<Integer>> G = { it * 5 }
+    static final Function<Integer,Either<Integer>> F_THEN_G = {
+        G.apply(F.apply(it))
+    }
 
     @Unroll void 'fmap'() {
         given: 'a left Either instance'
@@ -24,8 +30,6 @@ class EitherSpec extends Specification {
     }
 
     @Unroll void 'fapply'() {
-        given: 'a left Either instance'
-            Either<String,String> eitherInstance = left('no processable')
         when: 'trying apply an applicative'
             Either<String,String> result = instance.fapply(applicativeFn)
         then: 'the value should match the expected result'
@@ -38,5 +42,19 @@ class EitherSpec extends Specification {
             left('unprocessable')  | right(TO_UPPER) | 'unprocessable'
     }
 
+    void 'first law: left identity'() {
+        expect: 'to follow the rule'
+            right(ONE).fmap(F).value == F.apply(ONE)
+    }
+
+    void 'second law: right identity'() {
+        expect: 'to follow the rule'
+            right(ONE).fmap(F).value == right(F.apply(ONE)).value
+    }
+
+    void 'third law: associativity'() {
+        expect: 'to follow the rule'
+            right(ONE).fmap(F).fmap(G).value == right(ONE).fmap(F_THEN_G).value
+    }
 
 }
