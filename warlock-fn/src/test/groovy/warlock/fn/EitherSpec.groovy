@@ -57,4 +57,26 @@ class EitherSpec extends Specification {
             right(ONE).fmap(F).fmap(G).value == right(ONE).fmap(F_THEN_G).value
     }
 
+    @Unroll void 'using Either'() {
+        expect: 'calling a method'
+            doComplicatedCalculation(
+                Either.right(sample),
+                function
+            ).value == result
+        where: 'possible values are'
+            sample | function     | result
+            'a'    | { it + 2 }   | 'a2'
+            2      | { it + 'a' } | '2a'
+            2      | { it.div(0) }| 2
+    }
+
+    Either<?,?> doComplicatedCalculation(Either<?,?> input, Function<?,?> fn) {
+        try {
+            return input.fmap(fn)
+        } catch(e) {
+            return Either.left(input.value)
+        }
+    }
+
+
 }
