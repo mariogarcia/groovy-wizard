@@ -61,23 +61,16 @@ class EitherSpec extends Specification {
     }
 
     @Unroll void 'using either'() {
-        setup:
+        setup: 'setting the left function'
             def fn2 = { 0 } as Function
         expect: 'calling a method'
-            calculation(right(sample), function, fn2).value == result
+            right(sample).either(fn1, fn2).value == result
         where: 'possible values are'
-            sample | function                           | result
+            sample | fn1                                | result
             'a'    | { it + 2 }                         | 'a2'
             2      | { it + 'a' }                       | '2a'
             2      | { it.div(0) }                      | 0
             2      | { throw new Exception('wrong fn')} | 0
-    }
-
-    Either<?,?> calculation(
-        final Either<?,?> input,
-        final Function<?,?> fn1,
-        final Function<?,?> fn2) {
-            return input.either(fn1, fn2)
     }
 
     void 'first law: left identity'() {
