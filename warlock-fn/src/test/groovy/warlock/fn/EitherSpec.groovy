@@ -37,6 +37,7 @@ class EitherSpec extends Specification {
         where: 'possible cases are'
             instance               | applicativeFn   | value
             right('processable')   | right(TO_UPPER) | 'PROCESSABLE'
+            // TODO check: If an Either is right... can any applicative be applied ?
             right('unprocessable') | left(TO_UPPER)  | 'unprocessable'
             left('unprocessable')  | left(TO_UPPER)  | 'unprocessable'
             left('unprocessable')  | right(TO_UPPER) | 'unprocessable'
@@ -48,16 +49,15 @@ class EitherSpec extends Specification {
         then: 'the value should match the expected result'
             result.value == value
         where: 'possible cases are'
-            instance               | fn                    | value
+            instance               | fn             | value
             right('processable')   | TO_UPPER_MONAD | 'PROCESSABLE'
             right('unprocessable') | TO_UPPER_MONAD | 'UNPROCESSABLE'
             left('unprocessable')  | TO_UPPER_MONAD | 'unprocessable'
             left('unprocessable')  | TO_UPPER_MONAD | 'unprocessable'
     }
 
-
     static final Function<String,Either<String,String>> TO_UPPER_MONAD = { String word ->
-        right(word.toUpperCase())
+        right(EitherSpec.TO_UPPER(word))
     }
 
     void 'first law: left identity'() {
