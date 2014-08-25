@@ -42,6 +42,24 @@ class EitherSpec extends Specification {
             left('unprocessable')  | right(TO_UPPER) | 'unprocessable'
     }
 
+    @Unroll void 'bind'() {
+        when: 'binding a function'
+            Either<String,String> result = instance.bind(fn)
+        then: 'the value should match the expected result'
+            result.value == value
+        where: 'possible cases are'
+            instance               | fn                    | value
+            right('processable')   | TO_UPPER_MONAD | 'PROCESSABLE'
+            right('unprocessable') | TO_UPPER_MONAD | 'UNPROCESSABLE'
+            left('unprocessable')  | TO_UPPER_MONAD | 'unprocessable'
+            left('unprocessable')  | TO_UPPER_MONAD | 'unprocessable'
+    }
+
+
+    static final Function<String,Either<String,String>> TO_UPPER_MONAD = { String word ->
+        right(word.toUpperCase())
+    }
+
     void 'first law: left identity'() {
         expect: 'to follow the rule'
             right(ONE).fmap(F).value == F.apply(ONE)
@@ -59,10 +77,7 @@ class EitherSpec extends Specification {
 
     @Unroll void 'using Either'() {
         expect: 'calling a method'
-            doComplicatedCalculation(
-                Either.right(sample),
-                function
-            ).value == result
+            calculation(right(sample), function).value == result
         where: 'possible values are'
             sample | function     | result
             'a'    | { it + 2 }   | 'a2'
@@ -70,11 +85,11 @@ class EitherSpec extends Specification {
             2      | { it.div(0) }| 2
     }
 
-    Either<?,?> doComplicatedCalculation(Either<?,?> input, Function<?,?> fn) {
+    Either<?,?> calculation(Either<?,?> input, Function<?,?> fn) {
         try {
             return input.fmap(fn)
         } catch(e) {
-            return Either.left(input.value)
+            return left(input.value)
         }
     }
 
