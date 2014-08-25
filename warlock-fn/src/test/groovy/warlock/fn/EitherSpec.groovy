@@ -16,7 +16,7 @@ class EitherSpec extends Specification {
         G.apply(F.apply(it))
     }
 
-    @Unroll void 'fmap'() {
+    @Unroll void 'using fmap'() {
         given: 'a left Either instance'
             Either<String,String> eitherInstance = left('no processable')
         when: 'trying to transform the value'
@@ -29,7 +29,7 @@ class EitherSpec extends Specification {
             left('unprocessable') | 'unprocessable'
     }
 
-    @Unroll void 'fapply'() {
+    @Unroll void 'using fapply'() {
         when: 'trying apply an applicative'
             Either<String,String> result = instance.fapply(applicativeFn)
         then: 'the value should match the expected result'
@@ -38,26 +38,46 @@ class EitherSpec extends Specification {
             instance               | applicativeFn   | value
             right('processable')   | right(TO_UPPER) | 'PROCESSABLE'
             // TODO check: If an Either is right... can any applicative be applied ?
-            right('unprocessable') | left(TO_UPPER)  | 'unprocessable'
+            right('unprocessable') | left(TO_UPPER)  | 'UNPROCESSABLE'
             left('unprocessable')  | left(TO_UPPER)  | 'unprocessable'
             left('unprocessable')  | right(TO_UPPER) | 'unprocessable'
     }
 
-    @Unroll void 'bind'() {
+    @Unroll void 'using bind'() {
         when: 'binding a function'
-            Either<String,String> result = instance.bind(fn)
+            Either<String,String> result = instance.bind(TO_UPPER_MONAD)
         then: 'the value should match the expected result'
             result.value == value
         where: 'possible cases are'
-            instance               | fn             | value
-            right('processable')   | TO_UPPER_MONAD | 'PROCESSABLE'
-            right('unprocessable') | TO_UPPER_MONAD | 'UNPROCESSABLE'
-            left('unprocessable')  | TO_UPPER_MONAD | 'unprocessable'
-            left('unprocessable')  | TO_UPPER_MONAD | 'unprocessable'
+            instance               | value
+            right('processable')   | 'PROCESSABLE'
+            right('unprocessable') | 'UNPROCESSABLE'
+            left('unprocessable')  | 'unprocessable'
+            left('unprocessable')  | 'unprocessable'
     }
 
     static final Function<String,Either<String,String>> TO_UPPER_MONAD = { String word ->
         right(EitherSpec.TO_UPPER(word))
+    }
+
+    @Unroll void 'using either'() {
+        setup:
+            def fn2 = { 0 } as Function
+        expect: 'calling a method'
+            calculation(right(sample), function, fn2).value == result
+        where: 'possible values are'
+            sample | function                           | result
+            'a'    | { it + 2 }                         | 'a2'
+            2      | { it + 'a' }                       | '2a'
+            2      | { it.div(0) }                      | 0
+            2      | { throw new Exception('wrong fn')} | 0
+    }
+
+    Either<?,?> calculation(
+        final Either<?,?> input,
+        final Function<?,?> fn1,
+        final Function<?,?> fn2) {
+            return input.either(fn1, fn2)
     }
 
     void 'first law: left identity'() {
@@ -74,24 +94,5 @@ class EitherSpec extends Specification {
         expect: 'to follow the rule'
             right(ONE).fmap(F).fmap(G).value == right(ONE).fmap(F_THEN_G).value
     }
-
-    @Unroll void 'using Either'() {
-        expect: 'calling a method'
-            calculation(right(sample), function).value == result
-        where: 'possible values are'
-            sample | function     | result
-            'a'    | { it + 2 }   | 'a2'
-            2      | { it + 'a' } | '2a'
-            2      | { it.div(0) }| 2
-    }
-
-    Either<?,?> calculation(Either<?,?> input, Function<?,?> fn) {
-        try {
-            return input.fmap(fn)
-        } catch(e) {
-            return left(input.value)
-        }
-    }
-
 
 }

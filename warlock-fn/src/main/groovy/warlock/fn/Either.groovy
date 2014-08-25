@@ -24,6 +24,14 @@ class Either<I,O> implements Monad<I,O> {
         return isLeft() ? this : function.apply(value)
     }
 
+    Either either(Function<I,O> inCaseRight, Function<I,O> inCaseLeft) {
+        try {
+            return isLeft() ? this.fmap(inCaseLeft) : this.fmap(inCaseRight)
+        } catch(e) {
+            return this.fmap(inCaseLeft)
+        }
+    }
+
     Boolean isLeft() {
         return this.type == Type.LEFT
     }
